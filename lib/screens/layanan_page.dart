@@ -53,7 +53,7 @@ class LayananPage extends StatelessWidget {
             // --- Daftar layanan ---
             ...services.map(
               (item) => Card(
-                color: kCardDark,
+                color: const Color(0xFFB0B0B0),
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 elevation: 4,
                 shadowColor: Colors.black54,
@@ -61,20 +61,20 @@ class LayananPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: ExpansionTile(
-                  collapsedIconColor: kTextMedium,
-                  iconColor: kTextTitle,
+                  collapsedIconColor: Color(0xFF3F4E5A),
+                  iconColor: Color(0xFF2B343D),
                   leading: Icon(
                     Icons.content_cut,
                     color: item.kategori == "Premium"
-                        ? Colors.amber
-                        : kTextTitle,
+                        ? Color(0xFF2B343D)
+                        : Color(0xFF2B343D),
                   ),
                   title: Text(
                     "${item.nama} (${item.kategori})",
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
-                      color: kTextTitle,
+                      color:Color(0xFF2B343D),
                     ),
                   ),
                   subtitle: Column(
@@ -83,7 +83,7 @@ class LayananPage extends StatelessWidget {
                       Text(
                         "Harga: Rp${item.harga} | Diskon: ${item.diskon}% | Estimasi: ${item.durasi} menit",
                         style: GoogleFonts.poppins(
-                          color: kTextMedium,
+                          color:Color(0xFF2B343D),
                           fontSize: 13,
                         ),
                       ),
@@ -91,7 +91,7 @@ class LayananPage extends StatelessWidget {
                         const Text(
                           "Bisa datang ke rumah",
                           style: TextStyle(
-                            color: Colors.greenAccent,
+                            color: Color(0xFF2B343D),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -99,7 +99,7 @@ class LayananPage extends StatelessWidget {
                         Text(
                           "Barberman: ${item.barberman.join(', ')}",
                           style: GoogleFonts.poppins(
-                            color: Colors.cyanAccent,
+                            color: Color(0xFF2B343D),
                             fontSize: 12,
                           ),
                         ),
@@ -115,7 +115,7 @@ class LayananPage extends StatelessWidget {
                             Text(
                               "Pilihan Tambahan:",
                               style: GoogleFonts.poppins(
-                                color: kTextTitle,
+                                color: Color(0xFF2B343D),
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -126,13 +126,13 @@ class LayananPage extends StatelessWidget {
                                   const Icon(
                                     Icons.check,
                                     size: 16,
-                                    color: Colors.greenAccent,
+                                    color: Color(0xFF2B343D),
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     sub,
                                     style: GoogleFonts.poppins(
-                                      color: kTextMedium,
+                                      color: Color(0xFF2B343D),
                                       fontSize: 13,
                                     ),
                                   ),

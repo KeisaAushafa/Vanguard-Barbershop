@@ -38,8 +38,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Setelah 3 detik -> pindah ke Login
-    Future.delayed(const Duration(seconds: 3), _goToLogin);
+    // Setelah 8 detik -> pindah ke Login
+    Future.delayed(const Duration(seconds: 8), _goToLogin);
   }
 
   void _goToLogin() {
@@ -83,9 +83,11 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                   // Logo Aplikasi
                   Image.asset("assets/logo.png", width: 140),
                   const SizedBox(height: 20),
                   const Text(
+                     // Nama Aplikasi
                     "Vanguard Barbershop",
                     style: TextStyle(
                       color: Colors.white,
@@ -99,6 +101,15 @@ class _SplashScreenState extends State<SplashScreen>
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
+                    ),
+                  ),
+                    // ✅ Nama Pembuat Aplikasi (tambahan baru)
+                  const Text(
+                  "Created by: Keisa Aushafa Dzihni",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white70,
                     ),
                   ),
                 ],

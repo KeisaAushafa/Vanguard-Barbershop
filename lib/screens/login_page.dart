@@ -175,6 +175,7 @@ class _LoginPageState extends State<LoginPage>
                   ),
                 ),
               ),
+              
               const SizedBox(height: 12),
               TextField(
                 controller: _phoneController, // ✅ pakai controller
@@ -226,6 +227,18 @@ class _LoginPageState extends State<LoginPage>
                 child: const Text("Log In"),
               ),
               const SizedBox(height: 20),
+                  //Pemisah "or"
+              Row(
+                children: const [
+                  Expanded(child: Divider(thickness: 1)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Text("or"),
+                  ),
+                  Expanded(child: Divider(thickness: 1)),
+                ],
+              ),
+              const SizedBox(height: 18),
               Row(
                 children: [
                   Expanded(
