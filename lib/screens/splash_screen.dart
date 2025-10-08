@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'dart:async';
 import 'login_page.dart';
 
@@ -83,11 +84,11 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   // Logo Aplikasi
+                  // Logo Aplikasi
                   Image.asset("assets/logo.png", width: 140),
                   const SizedBox(height: 20),
                   const Text(
-                     // Nama Aplikasi
+                    // Nama Aplikasi
                     "Vanguard Barbershop",
                     style: TextStyle(
                       color: Colors.white,
@@ -103,14 +104,18 @@ class _SplashScreenState extends State<SplashScreen>
                       fontSize: 16,
                     ),
                   ),
-                    // ✅ Nama Pembuat Aplikasi (tambahan baru)
+
                   const Text(
-                  "Created by: Keisa Aushafa Dzihni",
+                    "Created by: Keisa Aushafa Dzihni",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: Colors.white70,
                     ),
+                  ),
+                  LoadingAnimationWidget.inkDrop(
+                    color: Colors.white,
+                    size: 30,
                   ),
                 ],
               ),
