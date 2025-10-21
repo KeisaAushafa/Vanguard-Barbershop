@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'screens/splash_screen.dart';
-import 'models/person.dart' hide Employee;
-import 'models/customer.dart' hide Customer;
-import 'models/employee.dart';
+import 'services/app_settings.dart';
+import 'models/person.dart';
+import 'theme/palette.dart';
 
 void main() {
-  // ===== Contoh penggunaan OOP Person / Customer / Employee =====
+
   var person = Person("Andi", "andi@mail.com", "08123456789");
   var customer = Customer("Siti", "siti@mail.com", "0822334455");
   var employee = Employee("Budi", "budi@mail.com", "08987654321", "Kasir");
@@ -21,64 +20,38 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static const Color darkest = Color(0xFF2B343D);
+  static const Color dark = Color(0xFF3F4E5A);
+  static const Color medium = Color(0xFF586A79);
+  static const Color light = Color(0xFFA1A4B9);
+  static const Color lighter = Color(0xFFBCC1CE);
+
+  // very small i18n map used across the app
+  static const Map<String, Map<String, String>> localized = {
+    'id': {
+      'title': 'Vanguard Barbershop',
+      'splash': 'Selamat Datang',
+    },
+    'en': {
+      'title': 'Vanguard Barbershop',
+      'splash': 'Welcome',
+    }
+  };
+
   @override
   Widget build(BuildContext context) {
-    // 🎨 Palet warna lama tetap dipakai
-    const darkest = Color(0xFF2B343D);
-    const dark = Color(0xFF3F4E5A);
-    const medium = Color(0xFF586A79);
-    const light = Color(0xFFA1A4B9);
-    const lighter = Color(0xFFBCC1CE);
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Vanguard Barbershop",
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: darkest,
-        primaryColor: medium,
-        appBarTheme: AppBarTheme(
-          backgroundColor: dark,
-          foregroundColor: lighter,
-          titleTextStyle: GoogleFonts.poppins(
-            color: lighter,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-          iconTheme: const IconThemeData(color: lighter),
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: dark,
-          selectedItemColor: lighter,
-          unselectedItemColor: light,
-        ),
-        textTheme: GoogleFonts.poppinsTextTheme().apply(
-          bodyColor: lighter,
-          displayColor: lighter,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: medium,
-            foregroundColor: lighter,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: dark,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          labelStyle: TextStyle(color: light),
-          hintStyle: TextStyle(color: light),
-        ),
-      ),
-
-      // ✅ SplashScreen baru tetap dipanggil di awal
-      home: const SplashScreen(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: AppSettings.themeMode,
+      builder: (context, themeMode, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: localized[AppSettings.language.value]!['title']!,
+          themeMode: themeMode,
+          theme: Palette.lightTheme,
+          darkTheme: Palette.darkTheme,
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }

@@ -1,11 +1,125 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/service_item.dart';
 import '../models/order_item.dart';
+import '../theme/palette.dart';
 
-const Color kColorDarkest = Color(0xFF2B343D);
-const Color kColorDark = Color(0xFF3F4E5A);
-const Color kColorLight = Color(0xFFA1A4B9);
-const Color kColorLightest = Color(0xFFBCC1CE);
+List<OrderItem> dummyOrders = [
+  // Hari Ini
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Haircut', harga: 50000, diskon: 0, durasi: 30),
+    tanggal: '2025-10-22',
+    jam: '10:00',
+    barberman: 'Andi',
+    status: '✔ Lunas',
+    id: 'B001',
+    totalHarga: 50000,
+    metodePembayaran: 'Cash',
+    catatan: 'Potong tipis',
+  ),
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Shave', harga: 40000, diskon: 10, durasi: 20),
+    tanggal: '2025-10-22',
+    jam: '11:00',
+    barberman: 'Budi',
+    status: '⏳ Belum Dibayar',
+    id: 'B002',
+    totalHarga: 40000,
+    metodePembayaran: 'OVO',
+    catatan: 'Shave klasik',
+  ),
+  OrderItem(
+    service: ServiceItem(kategori: 'Premium', nama: 'Haircut + Shave', harga: 90000, diskon: 5, durasi: 50),
+    tanggal: '2025-10-22',
+    jam: '14:00',
+    barberman: 'Citra',
+    status: '✔ Lunas',
+    id: 'B003',
+    totalHarga: 90000,
+    metodePembayaran: 'Gopay',
+    catatan: 'Potongan samping lebih pendek',
+  ),
+
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Haircut', harga: 50000, diskon: 0, durasi: 30),
+    tanggal: '2025-10-20',
+    jam: '09:30',
+    barberman: 'Andi',
+    status: '✔ Lunas',
+    id: 'B004',
+    totalHarga: 50000,
+    metodePembayaran: 'Cash',
+    catatan: '',
+  ),
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Shave', harga: 40000, diskon: 0, durasi: 20),
+    tanggal: '2025-10-18',
+    jam: '16:00',
+    barberman: 'Budi',
+    status: '❌ Dibatalkan',
+    id: 'B005',
+    totalHarga: 40000,
+    metodePembayaran: 'OVO',
+    catatan: 'Tidak datang',
+  ),
+
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Haircut', harga: 50000, diskon: 0, durasi: 30),
+    tanggal: '2025-10-10',
+    jam: '12:00',
+    barberman: 'Citra',
+    status: '✔ Lunas',
+    id: 'B006',
+    totalHarga: 50000,
+    metodePembayaran: 'Cash',
+    catatan: '',
+  ),
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Shave', harga: 40000, diskon: 0, durasi: 20),
+    tanggal: '2025-10-05',
+    jam: '14:00',
+    barberman: 'Andi',
+    status: '⏳ Belum Dibayar',
+    id: 'B007',
+    totalHarga: 40000,
+    metodePembayaran: 'Gopay',
+    catatan: '',
+  ),
+
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Haircut', harga: 50000, diskon: 0, durasi: 30),
+    tanggal: '2025-09-28',
+    jam: '10:00',
+    barberman: 'Budi',
+    status: '✔ Lunas',
+    id: 'B008',
+    totalHarga: 50000,
+    metodePembayaran: 'Cash',
+    catatan: '',
+  ),
+  OrderItem(
+    service: ServiceItem(kategori: 'Basic', nama: 'Shave', harga: 40000, diskon: 0, durasi: 20),
+    tanggal: '2025-09-15',
+    jam: '15:00',
+    barberman: 'Citra',
+    status: '❌ Dibatalkan',
+    id: 'B009',
+    totalHarga: 40000,
+    metodePembayaran: 'OVO',
+    catatan: '',
+  ),
+  OrderItem(
+    service: ServiceItem(kategori: 'Premium', nama: 'Haircut + Shave', harga: 90000, diskon: 5, durasi: 50),
+    tanggal: '2025-09-10',
+    jam: '13:00',
+    barberman: 'Andi',
+    status: '✔ Lunas',
+    id: 'B010',
+    totalHarga: 90000,
+    metodePembayaran: 'Gopay',
+    catatan: '',
+  ),
+];
 
 class RiwayatPage extends StatefulWidget {
   final List<OrderItem> orders;
@@ -20,18 +134,19 @@ class _RiwayatPageState extends State<RiwayatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredOrders = _applyFilter(widget.orders);
+    final sourceOrders = (widget.orders.isNotEmpty) ? widget.orders : dummyOrders;
+    final filteredOrders = _applyFilter(sourceOrders);
 
     return Scaffold(
-      backgroundColor: kColorDarkest,
+      backgroundColor: Palette.deepNavy,
       appBar: AppBar(
-        backgroundColor: kColorDark,
+        backgroundColor: Palette.steelGray,
         title: Text("Riwayat Pesanan",
-            style: GoogleFonts.poppins(color: kColorLightest)),
+            style: GoogleFonts.poppins(color: Palette.ivory)),
         actions: [
           PopupMenuButton<String>(
-            color: kColorDark,
-            icon: const Icon(Icons.filter_list, color: Colors.white),
+            color: Palette.steelGray,
+            icon: Icon(Icons.filter_list, color: Palette.ivory),
             onSelected: (val) => setState(() => filter = val),
             itemBuilder: (context) => [
               "Hari Ini",
@@ -42,7 +157,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
                 .map((f) => PopupMenuItem(
                       value: f,
                       child: Text(f,
-                          style: GoogleFonts.poppins(color: kColorLightest)),
+                          style: GoogleFonts.poppins(color: Palette.ivory)),
                     ))
                 .toList(),
           ),
@@ -51,14 +166,14 @@ class _RiwayatPageState extends State<RiwayatPage> {
       body: filteredOrders.isEmpty
           ? Center(
               child: Text("Belum ada riwayat pesanan.",
-                  style: GoogleFonts.poppins(color: kColorLight)))
+                  style: GoogleFonts.poppins(color: Palette.coolGray)))
           : ListView.builder(
               padding: const EdgeInsets.all(20),
               itemCount: filteredOrders.length,
               itemBuilder: (context, idx) {
                 final order = filteredOrders[idx];
                 return Card(
-                  color: kColorDark,
+                  color: Palette.steelGray,
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
                     leading: CircleAvatar(
@@ -67,11 +182,11 @@ class _RiwayatPageState extends State<RiwayatPage> {
                     ),
                     title: Text(order.service.nama,
                         style: GoogleFonts.poppins(
-                            color: kColorLightest,
+                            color: Palette.ivory,
                             fontWeight: FontWeight.bold)),
                     subtitle: Text(
                         "Tanggal: ${order.tanggal}\nJam: ${order.jam}\nBarber: ${order.barberman}\nStatus: ${order.status}\nTotal: Rp${order.totalHarga}",
-                        style: GoogleFonts.poppins(color: kColorLight)),
+                        style: GoogleFonts.poppins(color: Palette.coolGray)),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -87,14 +202,41 @@ class _RiwayatPageState extends State<RiwayatPage> {
     );
   }
 
-  // === Filter logic ===
   List<OrderItem> _applyFilter(List<OrderItem> orders) {
-    if (filter == "Semua") return orders;
-    // sementara: contoh filter dummy
-    return orders.where((o) => o.status != "❌ Dibatalkan").toList();
+    final now = DateTime.now();
+    if (filter == "Hari Ini") {
+      return orders.where((o) {
+        try {
+          final t = DateTime.parse(o.tanggal);
+          return t.year == now.year && t.month == now.month && t.day == now.day;
+        } catch (e) {
+          return false;
+        }
+      }).toList();
+    } else if (filter == "Minggu Ini") {
+      final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+      final endOfWeek = startOfWeek.add(const Duration(days: 6));
+      return orders.where((o) {
+        try {
+          final t = DateTime.parse(o.tanggal);
+          return !t.isBefore(startOfWeek) && !t.isAfter(endOfWeek);
+        } catch (e) {
+          return false;
+        }
+      }).toList();
+    } else if (filter == "Bulan Ini") {
+      return orders.where((o) {
+        try {
+          final t = DateTime.parse(o.tanggal);
+          return t.month == now.month && t.year == now.year;
+        } catch (e) {
+          return false;
+        }
+      }).toList();
+    }
+    return orders;
   }
 
-  // === Warna status ===
   Color _statusColor(String status) {
     if (status.contains("✔")) return Colors.green;
     if (status.contains("⏳")) return Colors.orange;
@@ -111,7 +253,6 @@ class _RiwayatPageState extends State<RiwayatPage> {
   }
 }
 
-// ==================== Detail Transaksi ====================
 class RiwayatDetailPage extends StatelessWidget {
   final OrderItem order;
   const RiwayatDetailPage({super.key, required this.order});
@@ -119,11 +260,11 @@ class RiwayatDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kColorDarkest,
+      backgroundColor: Palette.deepNavy,
       appBar: AppBar(
-        backgroundColor: kColorDark,
+        backgroundColor: Palette.steelGray,
         title: Text("Detail Transaksi",
-            style: GoogleFonts.poppins(color: kColorLightest)),
+            style: GoogleFonts.poppins(color: Palette.ivory)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -145,7 +286,7 @@ class RiwayatDetailPage extends StatelessWidget {
 
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: Palette.classicBlue,
                   minimumSize: const Size(double.infinity, 50)),
               icon: const Icon(Icons.repeat),
               label: const Text("Pesan Ulang"),
@@ -155,10 +296,9 @@ class RiwayatDetailPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
-
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
+                  backgroundColor: Palette.barberRed,
                   minimumSize: const Size(double.infinity, 50)),
               icon: const Icon(Icons.star_rate),
               label: const Text("Beri Review"),
@@ -167,10 +307,9 @@ class RiwayatDetailPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
-
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Palette.classicBlue,
                   minimumSize: const Size(double.infinity, 50)),
               icon: const Icon(Icons.picture_as_pdf),
               label: const Text("Download Struk"),
@@ -193,27 +332,26 @@ class RiwayatDetailPage extends StatelessWidget {
         children: [
           Text("$label: ",
               style: GoogleFonts.poppins(
-                  color: kColorLightest, fontWeight: FontWeight.w600)),
+                  color: Palette.ivory, fontWeight: FontWeight.w600)),
           Expanded(
             child: Text(value,
-                style: GoogleFonts.poppins(color: kColorLightest)),
+                style: GoogleFonts.poppins(color: Palette.ivory)),
           ),
         ],
       ),
     );
   }
 
-  // === Dialog Review ===
   void _showReviewDialog(BuildContext context) {
     double rating = 0;
     final controller = TextEditingController();
 
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: kColorDark,
-        title: Text("Beri Review",
-            style: GoogleFonts.poppins(color: kColorLightest)),
+    builder: (ctx) => AlertDialog(
+    backgroundColor: Palette.steelGray,
+    title: Text("Beri Review",
+      style: GoogleFonts.poppins(color: Palette.ivory)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -235,12 +373,12 @@ class RiwayatDetailPage extends StatelessWidget {
             ),
             TextField(
               controller: controller,
-              style: GoogleFonts.poppins(color: kColorLightest),
+              style: GoogleFonts.poppins(color: Palette.ivory),
               decoration: InputDecoration(
                 hintText: "Tulis komentar...",
-                hintStyle: GoogleFonts.poppins(color: kColorLight),
+                hintStyle: GoogleFonts.poppins(color: Palette.coolGray),
                 filled: true,
-                fillColor: kColorDarkest,
+                fillColor: Palette.deepNavy,
               ),
             ),
           ],
@@ -248,8 +386,8 @@ class RiwayatDetailPage extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: Text("Batal",
-                  style: GoogleFonts.poppins(color: kColorLight))),
+        child: Text("Batal",
+          style: GoogleFonts.poppins(color: Palette.coolGray))),
           TextButton(
               onPressed: () {
                 Navigator.pop(ctx);
@@ -257,10 +395,18 @@ class RiwayatDetailPage extends StatelessWidget {
                     content: Text(
                         "Review terkirim: $rating bintang, '${controller.text}'")));
               },
-              child: Text("Kirim",
-                  style: GoogleFonts.poppins(color: Colors.amber))),
+                  child: Text("Kirim",
+                      style: GoogleFonts.poppins(color: Colors.amber))),
         ],
       ),
     );
   }
+}
+
+// ==================== MAIN ====================
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: RiwayatPage(orders: dummyOrders),
+  ));
 }

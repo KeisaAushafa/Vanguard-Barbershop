@@ -25,21 +25,16 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1200),
     );
 
-    _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutCubic,
-    ));
-
-    _fadeAnim = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    _slideAnim =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
     );
+
+    _fadeAnim = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
     _controller.forward();
 
-    // Setelah 8 detik -> pindah ke Login
     Future.delayed(const Duration(seconds: 8), _goToLogin);
   }
 
@@ -53,10 +48,8 @@ class _SplashScreenState extends State<SplashScreen>
             const LoginPage(),
         transitionsBuilder: (context, animation, secondary, child) {
           final offsetTween = Tween<Offset>(
-            begin: const Offset(0, 1),
-            end: Offset.zero,
-          ).chain(CurveTween(curve: Curves.easeOutCubic));
-
+                  begin: const Offset(0, 1), end: Offset.zero)
+              .chain(CurveTween(curve: Curves.easeOutCubic));
           return SlideTransition(
             position: animation.drive(offsetTween),
             child: FadeTransition(opacity: animation, child: child),
@@ -70,10 +63,17 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/background.jpg"),
-            fit: BoxFit.cover,
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF2C3E50),
+              Color(0xFF3F4E5A),
+              Color(0xFF7A869A),
+              Color(0xFFDADFE3)
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
         child: Center(
@@ -84,38 +84,26 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo Aplikasi
                   Image.asset("assets/logo.png", width: 140),
                   const SizedBox(height: 20),
-                  const Text(
-                    // Nama Aplikasi
-                    "Vanguard Barbershop",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  const Text("Vanguard Barbershop",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  const Text(
-                    "Modern Cuts. Classic Shaves.",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                    ),
-                  ),
-
-                  const Text(
-                    "Created by: Keisa Aushafa Dzihni",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white70,
-                    ),
-                  ),
+                  const Text("Modern Cuts. Classic Shaves.",
+                      style: TextStyle(color: Colors.white70, fontSize: 16)),
+                  const SizedBox(height: 8),
+                  const Text("Created by: Keisa Aushafa Dzihni",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white60)),
+                  const SizedBox(height: 20),
                   LoadingAnimationWidget.inkDrop(
                     color: Colors.white,
-                    size: 30,
+                    size: 35,
                   ),
                 ],
               ),

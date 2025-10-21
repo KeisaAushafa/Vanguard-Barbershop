@@ -13,7 +13,9 @@ dependencies:
   provider: ^6.0.5
   google_fonts: ^6.2.1
   font_awesome_flutter: ^10.7.0
-  loading_animation_widget:
+  loading_animation_widget: any
+  flutter_signin_button: ^2.1.1
+  sign_in_button: ^4.0.1
 
 dev_dependencies:
   flutter_test:
@@ -24,7 +26,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/background.jpg
-    - assets/background2.jpg
     - assets/logo.png
     - assets/qr.png

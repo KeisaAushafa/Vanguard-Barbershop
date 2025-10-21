@@ -22,8 +22,8 @@ class BookingPage extends StatefulWidget {
 class _BookingPageState extends State<BookingPage> {
   ServiceItem? selectedService;
   String? selectedBarber;
-  String? selectedDate;
-  String? selectedTime;
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,8 @@ class _BookingPageState extends State<BookingPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+
+            // Pilih Layanan
             DropdownButtonFormField<ServiceItem>(
               decoration: InputDecoration(
                 labelText: "Pilih Layanan",
@@ -53,11 +55,11 @@ class _BookingPageState extends State<BookingPage> {
               onChanged: (s) => setState(() {
                 selectedService = s;
                 selectedBarber = null;
-                selectedDate = null;
-                selectedTime = null;
               }),
             ),
             const SizedBox(height: 10),
+
+            // Pilih Barberman
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 labelText: "Pilih Barberman",
@@ -74,56 +76,114 @@ class _BookingPageState extends State<BookingPage> {
               onChanged: (b) => setState(() => selectedBarber = b),
             ),
             const SizedBox(height: 10),
+
+            // Pilih Tanggal (DatePicker)
             TextField(
+              readOnly: true,
+              controller: TextEditingController(
+                  text: selectedDate != null
+                      ? "${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}"
+                      : ""),
               style: GoogleFonts.poppins(color: kColorLightest),
               decoration: InputDecoration(
-                labelText: "Tanggal (cth: 21 Sept 2025)",
+                labelText: "Tanggal",
                 labelStyle: GoogleFonts.poppins(color: kColorLight),
                 filled: true,
                 fillColor: kColorDark,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.calendar_today, color: Colors.white),
+                  onPressed: () async {
+                    DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2030),
+                      builder: (context, child) => Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: Color(0xFF586A79),
+                            onPrimary: Colors.white,
+                            onSurface: Colors.black,
+                          ),
+                        ),
+                        child: child!,
+                      ),
+                    );
+                    if (picked != null) setState(() => selectedDate = picked);
+                  },
+                ),
               ),
-              onChanged: (val) => selectedDate = val,
             ),
             const SizedBox(height: 10),
+
+            // Pilih Jam (TimePicker)
             TextField(
+              readOnly: true,
+              controller: TextEditingController(
+                  text: selectedTime != null ? selectedTime!.format(context) : ""),
               style: GoogleFonts.poppins(color: kColorLightest),
               decoration: InputDecoration(
-                labelText: "Jam (cth: 14:00)",
+                labelText: "Jam",
                 labelStyle: GoogleFonts.poppins(color: kColorLight),
                 filled: true,
                 fillColor: kColorDark,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.access_time, color: Colors.white),
+                  onPressed: () async {
+                    TimeOfDay? picked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (picked != null) setState(() => selectedTime = picked);
+                  },
+                ),
               ),
-              onChanged: (val) => selectedTime = val,
             ),
             const SizedBox(height: 20),
+
+            // Tombol Konfirmasi Booking
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: kColorMid,
                 foregroundColor: kColorLightest,
                 minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: () {
-                if(selectedService != null && selectedBarber != null && selectedDate != null && selectedTime != null){
+                if (selectedService != null &&
+                    selectedBarber != null &&
+                    selectedDate != null &&
+                    selectedTime != null) {
+                  
                   widget.onBook(OrderItem(
                     service: selectedService!,
-                    tanggal: selectedDate!,
-                    jam: selectedTime!,
+                    tanggal:
+                        "${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}",
+                    jam: selectedTime!.format(context),
                     barberman: selectedBarber!,
-                    status: "Menunggu",
+                    status: "⏳ Menunggu",
                   ));
+
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Booking berhasil!"))
+                    const SnackBar(content: Text("Booking berhasil!")),
                   );
+                
+                  setState(() {
+                    selectedService = null;
+                    selectedBarber = null;
+                    selectedDate = null;
+                    selectedTime = null;
+                  });
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Lengkapi data booking!"))
+                    const SnackBar(content: Text("Lengkapi semua data booking!")),
                   );
                 }
               },
-              child: Text("Konfirmasi Booking", style: GoogleFonts.poppins()),
-            )
+              child: Text("Konfirmasi Booking", style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+            ),
           ],
         ),
       ),

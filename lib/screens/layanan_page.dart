@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/service_item.dart';
 
-/// 🎨 Palette Warna Baru (disamakan dengan Home & Spec terbaru)
 const Color kBgMain = Color(0xFF2B343D); // background utama
 const Color kAppBarTop = Color(0xFF3F4E5A); // appbar gradasi atas
 const Color kAppBarBottom = Color(0xFF2B343D); // appbar gradasi bawah
 const Color kTextTitle = Color(0xFFBCC1CE); // abu terang
 const Color kTextMedium = Color(0xFFA1A4B9); // abu medium
 const Color kIconActiveBg = Color(0xFF586A79); // bg icon active
-const Color kCardLight = Color(0xFFB0B0B0); // card promo
-const Color kCardDark = Color(0xFF3F4E5A); // card di layanan
-const Color kTextDark = Color(0xFF2B343D); // teks gelap
-const Color kTextDarkBlue = Color(0xFF3F4E5A); // teks biru gelap
+const Color kCardLight = Color(0xFFFDF3E7); // cream
+const Color kCardDark = Color(0xFF6E4CA7); // purple (ungu)
+const Color kTextDark = Color(0xFF2B343D); // teks gelap (untuk cream)
+const Color kTextOnPurple = Color(0xFFFFFFFF); // teks putih pada ungu
 
 class LayananPage extends StatelessWidget {
   final List<ServiceItem> services;
@@ -40,143 +39,142 @@ class LayananPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // --- Header ---
-            Text(
-              "Daftar Layanan",
-              style: GoogleFonts.poppins(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: kTextTitle,
-              ),
+            Row(
+              children: [
+                const Text('✂️', style: TextStyle(fontSize: 26)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Daftar Layanan",
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: kTextTitle,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Pilih layanan terbaik untukmu — kualitas & gaya modern',
+                        style: GoogleFonts.poppins(color: kTextMedium, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.filter_list),
+                  label: const Text('Filter'),
+                  style: ElevatedButton.styleFrom(backgroundColor: kIconActiveBg),
+                )
+              ],
             ),
             const SizedBox(height: 14),
 
             // --- Daftar layanan ---
             ...services.map(
-              (item) => Card(
-                color: const Color(0xFFB0B0B0),
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                elevation: 4,
-                shadowColor: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: ExpansionTile(
-                  collapsedIconColor: Color(0xFF3F4E5A),
-                  iconColor: Color(0xFF2B343D),
-                  leading: Icon(
-                    Icons.content_cut,
-                    color: item.kategori == "Premium"
-                        ? Color(0xFF2B343D)
-                        : Color(0xFF2B343D),
+              (item) {
+                // Dua warna saja: ungu untuk 'Coloring', sisanya cream
+                final bool isPurple = item.kategori == 'Coloring';
+                final Color tileColor = isPurple ? kCardDark : kCardLight;
+                final Color titleColor = isPurple ? kTextOnPurple : kTextDark;
+                final Color subtitleColor = isPurple ? kTextOnPurple.withOpacity(0.9) : kTextMedium;
+                final Color iconColor = isPurple ? kTextOnPurple : kTextDark;
+
+                final hargaDiskon = item.harga - ((item.harga * item.diskon) ~/ 100);
+
+                return Card(
+                  color: tileColor,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  elevation: 4,
+                  shadowColor: Colors.black45,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  title: Text(
-                    "${item.nama} (${item.kategori})",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color:Color(0xFF2B343D),
-                    ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Harga: Rp${item.harga} | Diskon: ${item.diskon}% | Estimasi: ${item.durasi} menit",
-                        style: GoogleFonts.poppins(
-                          color:Color(0xFF2B343D),
-                          fontSize: 13,
-                        ),
-                      ),
-                      if (item.bisaDatangKerumah)
-                        const Text(
-                          "Bisa datang ke rumah",
-                          style: TextStyle(
-                            color: Color(0xFF2B343D),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      if (item.barberman.isNotEmpty)
-                        Text(
-                          "Barberman: ${item.barberman.join(', ')}",
-                          style: GoogleFonts.poppins(
-                            color: Color(0xFF2B343D),
-                            fontSize: 12,
-                          ),
-                        ),
-                    ],
-                  ),
-                  children: [
-                    if (item.subItems.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Pilihan Tambahan:",
-                              style: GoogleFonts.poppins(
-                                color: Color(0xFF2B343D),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            ...item.subItems.map(
-                              (sub) => Row(
-                                children: [
-                                  const Icon(
-                                    Icons.check,
-                                    size: 16,
-                                    color: Color(0xFF2B343D),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    sub,
-                                    style: GoogleFonts.poppins(
-                                      color: Color(0xFF2B343D),
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kIconActiveBg,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          icon: const Icon(Icons.add_shopping_cart),
-                          label: const Text("Tambah ke Keranjang"),
-                          onPressed: () {
-                            onAddToCart(item);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "${item.nama} ditambahkan ke keranjang",
+                        Row(
+                          children: [
+                            Icon(Icons.content_cut, size: 26, color: iconColor),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                '${item.nama} • ${item.kategori}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: titleColor,
                                 ),
                               ),
-                            );
-                          },
+                            ),
+                            if (item.diskon > 0)
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: kIconActiveBg,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text('🎉 ${item.diskon} %', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              )
+                          ],
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(height: 8),
+                        Text('Harga: Rp${item.harga}  →  Rp$hargaDiskon', style: GoogleFonts.poppins(color: subtitleColor, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 8),
+                        if (item.subItems.isNotEmpty)
+                          Wrap(
+                            spacing: 8,
+                            children: item.subItems
+                                .map((s) => Chip(
+                                      backgroundColor: isPurple ? Colors.white10 : Colors.white70,
+                                      label: Text(
+                                        s,
+                                        style: TextStyle(color: isPurple ? kTextOnPurple : kTextDark),
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isPurple ? const Color(0xFF7D5DB8) : kIconActiveBg,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              icon: const Icon(Icons.add_shopping_cart),
+                              label: const Text("Tambah ke Keranjang"),
+                              onPressed: () {
+                                onAddToCart(item);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "${item.nama} ditambahkan ke keranjang",
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 20),
 
-            // --- Summary + Checkout ---
             Card(
               color: kCardDark,
               elevation: 5,
@@ -237,7 +235,7 @@ class LayananPage extends StatelessWidget {
     );
   }
 
-  // --- Bottom sheet pilihan pembayaran ---
+  
   void _showPaymentOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -322,7 +320,7 @@ class LayananPage extends StatelessWidget {
     );
   }
 
-  // --- Dialog QRIS ---
+  // QRIS
   void _showQrisDialog(BuildContext context) async {
     await showDialog(
       context: context,
